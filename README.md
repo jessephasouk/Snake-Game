@@ -1,4 +1,4 @@
-# Snake Game 🐍
+# Snake Game 
 
 A classic Snake game implementation in Java using Swing for the GUI. Control the snake to eat food, grow longer, and try to fill the entire board without hitting yourself or the walls!
 
@@ -39,15 +39,12 @@ java SnakeGame
 - **GUI Framework**: Swing
 - **Board Size**: 20×20 tiles (500×500 pixels)
 - **Tile Size**: 25×25 pixels
-- **Game Speed**: 100ms delay between moves
 
 ## Implementation Highlights
 
-- **LinkedList** for efficient snake operations (O(1) add/remove)
+- **LinkedList** for efficient snake operations 
 - **Direction Queue** to buffer multiple quick inputs between game ticks
 - **Collision Detection** for walls and self-collision
-- **Constructor Safety**: No "this" reference leaks during construction
-- **Null-Safe**: Proper null handling for queue operations
 
 ## Requirements
 
@@ -67,7 +64,3 @@ Snake/
 ## License
 
 Free to use and modify for educational purposes.
-
-## Author
-
-Built with assistance from GitHub Copilot 🤖
