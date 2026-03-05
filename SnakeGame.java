@@ -17,6 +17,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
     private final Queue<Character> directionQueue;
     private boolean running;
     private boolean won;
+    private boolean started;
     private Timer timer;
     private final Random random;
     private int score;
@@ -33,7 +34,15 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
     
     public void init() {
         addKeyListener(this);
-        startGame();
+        snake.clear();
+        snake.add(new Point(BOARD_WIDTH / 2, BOARD_HEIGHT / 2));
+        direction = 'R';
+        directionQueue.clear();
+        score = 0;
+        won = false;
+        running = true;
+        started = false;
+        spawnFood();
     }
     
     private void startGame() {
@@ -43,9 +52,18 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
         directionQueue.clear();
         score = 0;
         won = false;
-        spawnFood();
         running = true;
+        started = true;
+        spawnFood();
         
+        if (timer != null) {
+            timer.stop();
+        }
+        timer = new Timer(DELAY, this);
+        timer.start();
+    }
+    
+    private void startGameTimer() {
         if (timer != null) {
             timer.stop();
         }
@@ -153,7 +171,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (running) {
+        if (running && started) {
             move();
         }
         repaint();
@@ -172,15 +190,27 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
         Character lastDirObj = directionQueue.peek();
         char lastDirection = (lastDirObj != null) ? lastDirObj : direction;
         
+        boolean validMove = false;
+        
         // Only allow perpendicular turns (no 180° reversals)
         if (key == KeyEvent.VK_UP && lastDirection != 'D' && lastDirection != 'U') {
             directionQueue.offer('U');
+            validMove = true;
         } else if (key == KeyEvent.VK_DOWN && lastDirection != 'U' && lastDirection != 'D') {
             directionQueue.offer('D');
+            validMove = true;
         } else if (key == KeyEvent.VK_LEFT && lastDirection != 'R' && lastDirection != 'L') {
             directionQueue.offer('L');
+            validMove = true;
         } else if (key == KeyEvent.VK_RIGHT && lastDirection != 'L' && lastDirection != 'R') {
             directionQueue.offer('R');
+            validMove = true;
+        }
+        
+        // If game hasn't started yet and user pressed a valid direction, start it
+        if (!started && validMove) {
+            started = true;
+            startGameTimer();
         }
     }
     
